@@ -213,7 +213,7 @@ function getScore() {
             // Calculate score
             const score = getScore();
             const totalQuestions = questions.length;
-      
+
             // Start building HTML content
             let html = `
                 <!DOCTYPE html>
@@ -271,24 +271,24 @@ function getScore() {
                         You scored ${score} out of ${totalQuestions}
                     </div>
             `;
-      
+
             // Generate results for each question
             questions.forEach((question, index) => {
                 const userAnswer = selections[index];
                 const isCorrect = userAnswer === question.correctAnswer;
-      
+
                 // Start question div
                 html += `
                     <div class="question">
                         <h3>Question ${index + 1}: ${question.qType || 'Question'}</h3>
                         <p>${question.question}</p>
                 `;
-      
+
                 // Add image if exists
                 if (question.image) {
                     html += `<img src="https://ricky-11254.github.io/jamb1/${question.image}" alt="Question Image" class="question-image">`;
                 }
-      
+
                 // Add audio if exists
                 if (question.audio) {
                     html += `
@@ -298,7 +298,7 @@ function getScore() {
                         </audio>
                     `;
                 }
-      
+
                 // Generate choices
                 html += `<div class="choices">`;
                 question.choices.forEach((choice, choiceIndex) => {
@@ -309,7 +309,7 @@ function getScore() {
                     if (choiceIndex === userAnswer) {
                         choiceClass += isCorrect ? ' correct' : ' incorrect';
                     }
-      
+
                     html += `
                         <div class="choice ${choiceClass}">
                             ${choice}
@@ -317,7 +317,7 @@ function getScore() {
                     `;
                 });
                 html += `</div>`;
-      
+
                 // Add explanation if the answer was incorrect
                 if (!isCorrect && question.explanation) {
                     html += `
@@ -326,12 +326,12 @@ function getScore() {
                         </div>
                     `;
                 }
-      
+
                 html += `</div>`; // Close question div
             });
-      
+
             // Close HTML
-              html += `
+            html += `
                 <div style="text-align: center; margin-top: 20px;">
                     <button onclick="downloadResults()" class="download-btn">Download Results</button>
                 </div>
@@ -355,16 +355,12 @@ function getScore() {
                             // Show the button again after PDF is generated
                             btn.style.display = 'block';
                         });
-                        
-                    } else {
-                        alert('Please wait for the page to load before downloading the results.');
                     }
                 </script>
                 </body>
                 </html>
             `;
 
-        
             // Open results in a new window
             const resultsWindow = window.open('', '_blank');
             resultsWindow.document.write(html);
