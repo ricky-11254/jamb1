@@ -220,6 +220,7 @@ function getScore() {
                 <html>
                 <head>
                     <title>Quiz Results</title>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
                     <style>
                         body { 
                             font-family: Arial, sans-serif; 
@@ -330,14 +331,40 @@ function getScore() {
             });
       
             // Close HTML
-            html += `
+              html += `
                 <div style="text-align: center; margin-top: 20px;">
-                    <button onclick="window.download()">Download Results</button>
+                    <button onclick="downloadResults()" class="download-btn">Download Results</button>
                 </div>
+                <script>
+                    function downloadResults() {
+                        // Remove the download button temporarily
+                        const btn = document.querySelector('.download-btn');
+                        btn.style.display = 'none';
+                        
+                        // PDF options
+                        const opt = {
+                            margin: 1,
+                            filename: 'quiz-results.pdf',
+                            image: { type: 'jpeg', quality: 0.98 },
+                            html2canvas: { scale: 2 },
+                            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                        };
+
+                        // Generate PDF from the body content
+                        html2pdf().set(opt).from(document.body).save().then(function() {
+                            // Show the button again after PDF is generated
+                            btn.style.display = 'block';
+                        });
+                        
+                    } else {
+                        alert('Please wait for the page to load before downloading the results.');
+                    }
+                </script>
                 </body>
                 </html>
             `;
-      
+
+        
             // Open results in a new window
             const resultsWindow = window.open('', '_blank');
             resultsWindow.document.write(html);
